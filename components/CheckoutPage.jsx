@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { Image, StyleSheet, Text, View, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useCart } from '../context/CartContext.jsx';
 
@@ -20,135 +20,134 @@ export default function CheckoutPage({ navigation }) {
       position: 'top',
       visibilityTime: 3000,
     });
-    
+
     navigation.navigate('Home');
   };
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        {/* Header */}
+      <SafeAreaView style={{ flex: 1 }}>
+
+        {/* HEADER */}
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Checkout</Text>
+          <Text style={styles.back} onPress={() => navigation.goBack()}>‹</Text>
+          <Text style={styles.htitle}>Checkout</Text>
+
           <TouchableOpacity style={styles.cartButton}>
-            <Text style={styles.cartIcon}>🛒</Text>
+            <Image
+              source={require('../assets/images/cart.png')}
+              style={styles.cartImage}
+            />
             {cartItems.length > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
               </View>
             )}
           </TouchableOpacity>
+
         </View>
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-          {/* Cart Items */}
-          <View style={styles.section}>
-            <View style={styles.itemsHeader}>
-              <Text style={styles.itemsCountText}>{cartItems.length} {cartItems.length === 1 ? 'Item' : 'Items'} in Checkout ({totalQuantity} {totalQuantity === 1 ? 'piece' : 'pieces'})</Text>
-            </View>
-            <ScrollView 
-              style={[styles.cartItemsContainer, cartItems.length > 3 && styles.cartItemsScrollable]}
-              scrollEnabled={cartItems.length > 3}
-              showsVerticalScrollIndicator={cartItems.length > 3}
-            >
-              {cartItems.map((item) => (
-                <View key={item.id} style={styles.cartItem}>
-                  <View style={styles.itemImagePlaceholder}>
-                    <Text style={styles.placeholderText}>📷</Text>
-                  </View>
-                  
-                  <View style={styles.itemDetails}>
-                    <Text style={styles.itemName}>{item.name}</Text>
-                    <Text style={styles.itemStorage}>
-                      {item.category === 'Playstation' ? '2TB' : item.category === 'Xbox' ? '4GB' : '32GB'}
-                    </Text>
-                    <Text style={styles.itemPrice}>{item.price}</Text>
-                  </View>
-
-                  <View style={styles.itemQuantity}>
-                    <Text style={styles.itemQuantityText}>x{item.quantity}</Text>
-                  </View>
+        {/* PRODUCTS */}
+        <View style={{ maxHeight: 300 }}> {/* adjust height as needed */}
+          <ScrollView
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
+            showsVerticalScrollIndicator={true}
+          >
+            {cartItems.map(item => (
+              <View key={item.id} style={styles.productCard}>
+                <View style={styles.itemImagePlaceholder}>
+                  <Text style={{ fontSize: 28 }}>🎮</Text>
                 </View>
-              ))}
-            </ScrollView>
-          </View>
 
-          {/* Delivery Address */}
-          <TouchableOpacity style={styles.section}>
+                <View style={styles.productInfo}>
+                  <Text style={styles.productName}>{item.name}</Text>
+                  <Text style={styles.productSub}>
+                    {item.category === 'Playstation' ? '2TB' : item.category === 'Xbox' ? '4GB' : '32GB'}
+                  </Text>
+                  <Text style={styles.price}>₱ {item.price}</Text>
+                </View>
+
+                <Text style={styles.qty}>x{item.quantity}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+
+
+        {/* DETAILS CARD */}
+        <View style={styles.detailsCard}>
+
+          {/* Delivery */}
+          <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Delivery Address</Text>
-              <Text style={styles.arrowIcon}>›</Text>
-            </View>
-            <View style={styles.addressCard}>
-              <View style={styles.iconContainer}>
-                <Text style={styles.locationIcon}>📍</Text>
-              </View>
-              <View style={styles.addressInfo}>
-                <Text style={styles.addressStreet}>Julio Dela Cruz St, Makati</Text>
-                <Text style={styles.addressCity}>Makati</Text>
-              </View>
-              <View style={styles.checkmarkContainer}>
-                <Text style={styles.checkmark}>✓</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-
-          {/* Payment Method */}
-          <TouchableOpacity style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Payment Method</Text>
-              <Text style={styles.arrowIcon}>›</Text>
-            </View>
-            <View style={styles.paymentCard}>
-              <View style={styles.iconContainer}>
-                <Text style={styles.cardIcon}>💳</Text>
-              </View>
-              <View style={styles.paymentInfo}>
-                <Text style={styles.cardName}>MMMM</Text>
-                <Text style={styles.cardNumber}>**** 7890</Text>
-              </View>
-              <View style={styles.checkmarkContainer}>
-                <Text style={styles.checkmark}>✓</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-
-          {/* Order Info */}
-          <View style={styles.orderInfoSection}>
-            <Text style={styles.orderInfoTitle}>Order Info</Text>
-            
-            <View style={styles.orderInfoRow}>
-              <Text style={styles.orderInfoLabel}>Subtotal</Text>
-              <Text style={styles.orderInfoValue}>₱ {subtotal.toFixed(2)}</Text>
-            </View>
-            
-            <View style={styles.orderInfoRow}>
-              <Text style={styles.orderInfoLabel}>Delivery Fee</Text>
-              <Text style={styles.orderInfoValue}>₱ {deliveryFee.toFixed(2)}</Text>
-            </View>
-            
-            <View style={styles.orderInfoRow}>
-              <Text style={styles.orderInfoLabel}>Discount</Text>
-              <Text style={styles.orderInfoValue}>{discount}%</Text>
+              <Text style={styles.arrow}>›</Text>
             </View>
 
-            <View style={styles.totalSection}>
-              <View>
-                <Text style={styles.totalLabel}>Total: <Text style={styles.totalValue}>₱ {total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text></Text>
-                <Text style={styles.savedText}>Saved: ₱ {saved.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+            <View style={styles.rowCard}>
+              <Image source={require('../assets/images/location.png')} style={styles.icon} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.title}>Julio Dela Cruz St, Makati</Text>
+                <Text style={styles.sub}>Makati</Text>
               </View>
-              <TouchableOpacity style={styles.placeOrderButton} onPress={handlePlaceOrder}>
-                <Text style={styles.placeOrderText}>Place Order</Text>
-              </TouchableOpacity>
+              <View style={styles.check}><Text style={{ color: '#fff' }}>✓</Text></View>
             </View>
           </View>
 
-          {/* Bottom padding */}
-          <View style={styles.bottomPadding} />
-        </ScrollView>
+          {/* Payment */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Payment Method</Text>
+              <Text style={styles.arrow}>›</Text>
+            </View>
+
+            <View style={styles.rowCard}>
+              <Image source={require('../assets/images/gcash.png')} style={styles.icon} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.title}>GCash</Text>
+                <Text style={styles.sub}>**** 7890</Text>
+              </View>
+              <View style={styles.check}><Text style={{ color: '#fff' }}>✓</Text></View>
+            </View>
+          </View>
+
+          {/* Order Info */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Order Info</Text>
+
+            <View style={styles.infoRow}>
+              <Text style={styles.label}>Subtotal</Text>
+              <Text style={styles.value}>₱ {subtotal.toFixed(2)}</Text>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Text style={styles.label}>Delivery Fee</Text>
+              <Text style={styles.value}>₱ {deliveryFee.toFixed(2)}</Text>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Text style={styles.label}>Discount</Text>
+              <Text style={styles.value}>{discount}%</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* BOTTOM BAR */}
+        <View style={styles.bottomBar}>
+          <View>
+            <Text style={styles.total}>
+              Total: ₱ {total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </Text>
+            <Text style={styles.saved}>
+              Saved: ₱ {saved.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </Text>
+          </View>
+
+          <TouchableOpacity style={styles.orderBtn} onPress={handlePlaceOrder}>
+            <Text style={styles.orderText}>Place Order</Text>
+          </TouchableOpacity>
+        </View>
+
       </SafeAreaView>
     </View>
   );
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 20,
   },
   backButton: {
@@ -180,13 +179,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: '#ffffff',
     fontWeight: 'bold',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#ffffff',
-    flex: 1,
-    textAlign: 'center',
   },
   cartButton: {
     width: 40,
@@ -222,38 +214,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-  section: {
-    marginBottom: 12,
-  },
-  itemsHeader: {
-    marginBottom: 10,
-  },
-  itemsCountText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  cartItemsContainer: {
-  },
-  cartItemsScrollable: {
-    maxHeight: 210,
-  },
+
   cartItem: {
     flexDirection: 'row',
-    backgroundColor: '#1e3a5f',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 10,
+    backgroundColor: '#1b2a47',
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 14,
     alignItems: 'center',
+
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 6,
   },
+
   itemImagePlaceholder: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#2a4a6f',
-    borderRadius: 8,
+    width: 60,
+    height: 60,
+    backgroundColor: '#243a5e',
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   placeholderText: {
     fontSize: 25,
   },
@@ -262,21 +246,24 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   itemName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+
+  itemStorage: {
+    fontSize: 11,
+    color: '#9aa4c7',
+    marginTop: 2,
+  },
+
+  itemPrice: {
     fontSize: 14,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: 2,
+    marginTop: 4,
   },
-  itemStorage: {
-    fontSize: 10,
-    color: '#999',
-    marginBottom: 4,
-  },
-  itemPrice: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#ffffff',
-  },
+
   itemQuantity: {
     marginLeft: 10,
     justifyContent: 'center',
@@ -305,18 +292,18 @@ const styles = StyleSheet.create({
   addressCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1e3a5f',
-    borderRadius: 10,
-    padding: 8,
+    backgroundColor: '#1b2a47',
+    borderRadius: 16,
+    padding: 14,
   },
   iconContainer: {
-    width: 35,
-    height: 35,
-    backgroundColor: '#ff8c66',
-    borderRadius: 8,
+    width: 42,
+    height: 42,
+    backgroundColor: '#2c3e6e',
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 8,
+    marginRight: 12,
   },
   locationIcon: {
     fontSize: 18,
@@ -350,71 +337,11 @@ const styles = StyleSheet.create({
   paymentCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1e3a5f',
-    borderRadius: 10,
-    padding: 8,
+    backgroundColor: '#1b2a47',
+    borderRadius: 16,
+    padding: 14,
   },
-  cardIcon: {
-    fontSize: 18,
-  },
-  paymentInfo: {
-    flex: 1,
-  },
-  cardName: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginBottom: 1,
-  },
-  cardNumber: {
-    fontSize: 11,
-    color: '#999',
-  },
-  orderInfoSection: {
-    backgroundColor: '#1e3a5f',
-    borderRadius: 15,
-    padding: 20,
-    marginTop: 40,
-  },
-  orderInfoTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginBottom: 15,
-  },
-  orderInfoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  orderInfoLabel: {
-    fontSize: 15,
-    color: '#b0b0b0',
-  },
-  orderInfoValue: {
-    fontSize: 15,
-    color: '#ffffff',
-    fontWeight: '500',
-  },
-  totalSection: {
-    marginTop: 15,
-    paddingTop: 15,
-    borderTopWidth: 1,
-    borderTopColor: '#2a4a6f',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  totalLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#b0b0b0',
-  },
-  totalValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#ffffff',
-  },
+
   savedText: {
     fontSize: 14,
     color: '#4caf50',
@@ -434,4 +361,252 @@ const styles = StyleSheet.create({
   bottomPadding: {
     height: 20,
   },
+  back: {
+   fontSize: 56,
+    color: '#ffffff',
+    fontWeight: 'bold',
+    marginRight: 10,
+    marginBottom: 7
+  },
+
+  itemImagePlaceholder: {
+    width: 70,
+    height: 70,
+    backgroundColor: '#243a5e',
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+
+  qty: {
+    color: '#6b7fd7',
+    fontWeight: '600',
+  },
+
+detailsCard: {
+  backgroundColor: '#1D293D',
+  borderTopLeftRadius: 24,
+  borderTopRightRadius: 24,
+  padding: 24,
+  paddingBottom: 16, // smaller bottom padding to connect with bottomBar
+  borderBottomLeftRadius: 0,   // flat bottom
+  borderBottomRightRadius: 0,
+    // flat bottom
+},
+
+  rowCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#223252',
+    borderRadius: 14,
+    padding: 14,
+  },
+  htitle: {
+    flex: 1,
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '600',
+    
+  },
+  cartIcon: {
+    paddingTop: 4,
+    position: 'relative',
+  },
+  productCard: {
+    flexDirection: 'row',
+    backgroundColor: '#1b2a47',
+    borderRadius: 18,
+    padding: 20,
+    marginBottom: 10,
+    alignItems: 'center',
+    height: 100,
+  },
+
+  productEmoji: {
+    fontSize: 34,
+    marginRight: 14,
+  },
+
+  productName: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '600',
+    paddingLeft: 20,
+  },
+
+  productSub: {
+    color: '#9aa4c7',
+    fontSize: 12,
+    marginVertical: 2,
+    paddingLeft: 20,
+    paddingBottom: 10,
+  },
+
+  price: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    paddingLeft: 20,
+  },
+  arrow: {
+    color: '#fff',
+    fontSize: 18,
+  },
+
+  infoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1b2a47',
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 14,
+  },
+
+  icon: {
+    fontSize: 20,
+    marginRight: 12,
+  },
+
+  infoTitle: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+
+  infoSub: {
+    color: '#9aa4c7',
+    fontSize: 11,
+  },
+
+  check: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#4caf50',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#fff',
+    fontWeight: '700',
+  },
+
+  orderCard: {
+    backgroundColor: '#1b2a47',
+    borderRadius: 18,
+    padding: 18,
+    marginTop: 10,
+  },
+
+  orderTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+
+  rowLabel: {
+    color: '#9aa4c7',
+    fontSize: 14,
+  },
+
+  rowValue: {
+    color: '#fff',
+    fontSize: 14,
+  },
+
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#1b2a47',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 18,
+  },
+
+  total: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+
+  saved: {
+    color: '#4caf50',
+    fontSize: 13,
+    marginTop: 2,
+  },
+
+  orderBtn: {
+    backgroundColor: '#6b7fd7',
+    paddingHorizontal: 26,
+    paddingVertical: 14,
+    borderRadius: 14,
+  },
+
+  orderText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  productInfo: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  section: {
+    marginBottom: 10,
+  },
+  sectionTitle: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 20,
+  },
+
+  rowCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1D293D',
+    borderRadius: 14,
+    padding: 14,
+  },
+
+  infoRow: {
+    padding: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  label: {
+    color: '#9aa4c7',
+    fontSize: 14,
+  },
+
+  value: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '500',
+
+  },
+  title: {
+    flex: 1,
+    textAlign: 'left',
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  sub: {
+    color: '#9aa4c7',
+    fontSize: 12,
+    marginTop: 4,
+  },
+
 });

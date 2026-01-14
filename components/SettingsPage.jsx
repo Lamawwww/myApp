@@ -27,12 +27,12 @@ export default function SettingsPage({ navigation }) {
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.backIcon}>←</Text>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Settings</Text>
-          <View style={styles.headerSpacer} />
-        </View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backArrow}>‹</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Settings</Text>
+        <Text></Text>
+      </View>
 
         <View style={styles.content}>
           {/* Account Settings Section */}
@@ -58,13 +58,14 @@ export default function SettingsPage({ navigation }) {
               <Text style={styles.menuItemText}>Push notifications</Text>
               <Switch
                 value={pushNotifications}
+                style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
                 onValueChange={setPushNotifications}
                 trackColor={{ false: '#767577', true: '#6b7fd7' }}
                 thumbColor={pushNotifications ? '#ffffff' : '#f4f3f4'}
               />
             </View>
           </View>
-
+          <View style={styles.divider} />
           {/* More Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>More</Text>
@@ -98,7 +99,9 @@ export default function SettingsPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1628',
+    backgroundColor: '#0F172B',
+    paddingHorizontal: 20,
+    paddingTop: 50,
   },
   safeArea: {
     flex: 1,
@@ -106,31 +109,20 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 20,
+    justifyContent: 'space-around',
+    marginBottom: 30,
   },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backIcon: {
-    fontSize: 32,
+  backArrow: {
+    fontSize: 56,
     color: '#ffffff',
     fontWeight: 'bold',
+    marginRight: 10,
+    marginBottom: 7
   },
   headerTitle: {
-    fontSize: 18,
+    color: 'white',
+    fontSize: 20,
     fontWeight: '600',
-    color: '#ffffff',
-    flex: 1,
-    textAlign: 'center',
-  },
-  headerSpacer: {
-    width: 40,
   },
   content: {
     flex: 1,
@@ -140,7 +132,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: '#b0b0b0',
     marginBottom: 15,
@@ -149,16 +141,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#1e3a5f',
+    paddingVertical: 15,
+
   },
   menuItemText: {
-    fontSize: 16,
+    fontSize: 22,
     color: '#ffffff',
   },
   arrowIcon: {
-    fontSize: 24,
+    fontSize: 26,
     color: '#ffffff',
     fontWeight: 'bold',
   },
@@ -175,11 +166,18 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 30,
+    width: '60%',
+    alignSelf: 'center',
     marginHorizontal: 20,
   },
   logoutButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#ffffff',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#1E293B',
+    marginVertical: 15,
   },
 });
