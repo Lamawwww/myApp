@@ -15,6 +15,30 @@ export default function LoginPage({ navigation }) {
   const usernameLabelAnim = useRef(new Animated.Value(0)).current;
   const passwordLabelAnim = useRef(new Animated.Value(0)).current;
 
+  // Splash screen states
+  const [showSplash, setShowSplash] = useState(true);
+  const splashAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Animate splash fade-in
+    Animated.timing(splashAnim, {
+      toValue: 1,
+      duration: 800,
+      useNativeDriver: true,
+    }).start();
+
+    // Hide splash after 2 seconds
+    const timeout = setTimeout(() => {
+      Animated.timing(splashAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => setShowSplash(false));
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   useEffect(() => {
     Animated.timing(usernameLabelAnim, {
       toValue: isUsernameFocused || username ? 1 : 0,
@@ -49,10 +73,6 @@ export default function LoginPage({ navigation }) {
     navigation.navigate('SignUp');
   };
 
-  const handleSocialLogin = (platform) => {
-    console.log(`${platform} login pressed`);
-  };
-
   const usernameLabelStyle = {
     top: usernameLabelAnim.interpolate({
       inputRange: [0, 1],
@@ -83,9 +103,19 @@ export default function LoginPage({ navigation }) {
     }),
   };
 
+  // Show splash screen
+  if (showSplash) {
+    return (
+      <Animated.View style={[styles.splashContainer, { opacity: splashAnim }]}>
+        <Image source={require('../assets/images/PlayMi.png')} style={styles.splashLogo} />
+      </Animated.View>
+    );
+  }
+
+  // Main login page
   return (
     <View style={styles.container}>
-      {/* Title */}
+      {/* Logo */}
       <Image source={require('../assets/images/PlayMi.png')} style={styles.logo} />
 
       {/* Username Input */}
@@ -134,39 +164,35 @@ export default function LoginPage({ navigation }) {
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Social Login Section */}
+      {/* Social Login */}
       <Text style={styles.socialText}>Other ways to sign in:</Text>
       <View style={styles.socialContainer}>
-
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-        <Image
-          source={require('../assets/images/google_logo.png')}
-          style={styles.socialButton}
-                   
-        />
+          <Image source={require('../assets/images/google_logo.png')} style={styles.socialButton} />
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-        <Image  
-          source={require('../assets/images/fb_logo.png')}
-          style={styles.socialButton}
-                   
-        />
-        </TouchableOpacity>  
-
+          <Image source={require('../assets/images/fb_logo.png')} style={styles.socialButton} />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-        <Image
-          source={require('../assets/images/discord_logo.png')}
-          style={styles.socialButton}
-                   
-        />
-        </TouchableOpacity>          
+          <Image source={require('../assets/images/discord_logo.png')} style={styles.socialButton} />
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  splashContainer: {
+    flex: 1,
+    backgroundColor: '#0a1628',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  splashLogo: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+  },
   container: {
     flex: 1,
     backgroundColor: '#0a1628',
@@ -175,19 +201,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-  width: 230,
-  height: 200,
-  marginBottom: 20,
-  resizeMode: 'contain',
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 60,
-    textShadowColor: 'rgba(255, 255, 255, 0.3)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+    width: 230,
+    height: 200,
+    marginBottom: 20,
+    resizeMode: 'contain',
   },
   inputContainer: {
     width: '100%',
@@ -252,25 +269,5 @@ const styles = StyleSheet.create({
   socialButton: {
     width: 60,
     height: 60,
-  },
-  socialIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  facebookIcon: {
-    backgroundColor: '#1877f2',
-    require: '../assets/images/google_logo.png',
-  },
-  discordIcon: {
-    backgroundColor: '#5865f2',
-  },
-  socialIconText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#ffffff',
   },
 });
