@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Animated, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Animated, Pressable, Alert, Image } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -86,7 +86,7 @@ export default function LoginPage({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Title */}
-      <Text style={styles.title}>Play Mi</Text>
+      <Image source={require('../assets/images/PlayMi.png')} style={styles.logo} />
 
       {/* Username Input */}
       <Pressable style={styles.inputContainer} onPress={() => usernameInputRef.current?.focus()}>
@@ -137,32 +137,30 @@ export default function LoginPage({ navigation }) {
       {/* Social Login Section */}
       <Text style={styles.socialText}>Other ways to sign in:</Text>
       <View style={styles.socialContainer}>
-        <TouchableOpacity 
-          style={styles.socialButton} 
-          onPress={() => handleSocialLogin('Gmail')}
-        >
-          <View style={styles.socialIcon}>
-            <Text style={styles.socialIconText}>G</Text>
-          </View>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Image
+          source={require('../assets/images/google_logo.png')}
+          style={styles.socialButton}
+                   
+        />
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.socialButton} 
-          onPress={() => handleSocialLogin('Facebook')}
-        >
-          <View style={[styles.socialIcon, styles.facebookIcon]}>
-            <Text style={styles.socialIconText}>f</Text>
-          </View>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.socialButton} 
-          onPress={() => handleSocialLogin('Discord')}
-        >
-          <View style={[styles.socialIcon, styles.discordIcon]}>
-            <Text style={styles.socialIconText}>D</Text>
-          </View>
-        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Image  
+          source={require('../assets/images/fb_logo.png')}
+          style={styles.socialButton}
+                   
+        />
+        </TouchableOpacity>  
+
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Image
+          source={require('../assets/images/discord_logo.png')}
+          style={styles.socialButton}
+                   
+        />
+        </TouchableOpacity>          
       </View>
     </View>
   );
@@ -175,6 +173,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  logo: {
+  width: 230,
+  height: 200,
+  marginBottom: 20,
+  resizeMode: 'contain',
   },
   title: {
     fontSize: 64,
@@ -243,7 +247,7 @@ const styles = StyleSheet.create({
   },
   socialContainer: {
     flexDirection: 'row',
-    gap: 20,
+    gap: 30,
   },
   socialButton: {
     width: 60,
@@ -259,6 +263,7 @@ const styles = StyleSheet.create({
   },
   facebookIcon: {
     backgroundColor: '#1877f2',
+    require: '../assets/images/google_logo.png',
   },
   discordIcon: {
     backgroundColor: '#5865f2',

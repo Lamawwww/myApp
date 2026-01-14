@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Animated, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Animated, Pressable, Alert, Image } from 'react-native';
+import { useFonts } from 'expo-font';
 import { useState, useRef, useEffect } from 'react';
 import Toast from 'react-native-toast-message';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -24,6 +25,11 @@ export default function SignUpPage({ navigation }) {
   const passwordLabelAnim = useRef(new Animated.Value(0)).current;
   const confirmPasswordLabelAnim = useRef(new Animated.Value(0)).current;
   const emailLabelAnim = useRef(new Animated.Value(0)).current;
+
+  const [fontsLoaded] = useFonts({
+    'QuattrocentoSans-Regular': require('../assets/fonts/QuattrocentoSans-Regular.ttf'),
+  });
+  
 
   useEffect(() => {
     Animated.timing(usernameLabelAnim, {
@@ -157,7 +163,7 @@ export default function SignUpPage({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Title */}
-      <Text style={styles.title}>Play Mi</Text>
+      <Image source={require('../assets/images/PlayMi.png')} style={styles.logo} />
 
       {/* Username Input */}
       <Pressable style={styles.inputContainer} onPress={() => usernameInputRef.current?.focus()}>
@@ -200,7 +206,7 @@ export default function SignUpPage({ navigation }) {
 
       {/* Confirm Password Input */}
       <Pressable style={styles.inputContainer} onPress={() => confirmPasswordInputRef.current?.focus()}>
-        <Animated.Text style={[styles.inputLabel, createLabelStyle(confirmPasswordLabelAnim)]} pointerEvents="none">
+        <Animated.Text style={[styles.inputLabel, { fontFamily: 'QuattrocentoSans-Regular' }, createLabelStyle(confirmPasswordLabelAnim)]} pointerEvents="none">
           Confirm Password
         </Animated.Text>
         <TextInput
@@ -213,7 +219,7 @@ export default function SignUpPage({ navigation }) {
           secureTextEntry
           placeholderTextColor="#666"
         />
-        <Text style={[styles.validationText, { color: passwordMatch.color }]}>
+        <Text style={[styles.validationText, { color: passwordMatch.color }, { fontFamily: 'QuattrocentoSans-Regular' }]}>
           {passwordMatch.message}
         </Text>
       </Pressable>
@@ -277,6 +283,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     position: 'relative',
   },
+  logo: {
+  width: 230,
+  height: 200,
+  marginBottom: 10,
+  resizeMode: 'contain',
+  },  
+  text: {
+    fontFamily: 'QuattrocentoSans-Regular',
+  },  
   inputLabel: {
     position: 'absolute',
     left: 15,
