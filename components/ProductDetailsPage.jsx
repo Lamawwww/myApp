@@ -26,30 +26,37 @@ export default function ProductDetailsPage({ route, navigation }) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backIcon}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{product?.name || 'Product Details'}</Text>
+        <Text style={styles.headerTitle}>Product Details</Text>
         <View style={styles.headerSpacer} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Product Image */}
         <View style={styles.imageContainer}>
-          <View style={styles.productImagePlaceholder}>
-            <Text style={styles.placeholderText}>📷</Text>
-          </View>
+          {product?.image ? (
+            <Image source={product.image} style={styles.productImage} resizeMode="contain" />
+          ) : (
+            <View style={styles.productImagePlaceholder}>
+              <Text style={styles.placeholderText}>📷</Text>
+            </View>
+          )}
         </View>
 
         {/* Product Info */}
         <View style={styles.infoContainer}>
           <Text style={styles.productName}>{product?.name || 'Product Name'}</Text>
-          
+
           {/* Rating */}
           <View style={styles.ratingContainer}>
-            <Text style={styles.stars}>⭐⭐⭐⭐⭐</Text>
+            <Text style={styles.stars}>⭐ ⭐ ⭐ ⭐ ⭐</Text>
             <Text style={styles.ratingCount}>(108)</Text>
           </View>
 
           {/* Price */}
           <Text style={styles.price}>{product?.price || '₱ 0.00'}</Text>
+
+          {/* Description Header */}
+          <Text style={styles.descriptionHeader}>Description</Text>
 
           {/* Description */}
           <Text style={styles.description}>
@@ -60,7 +67,7 @@ export default function ProductDetailsPage({ route, navigation }) {
 
       {/* Bottom Action Bar */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.bookmarkButton}
           onPress={() => setIsBookmarked(!isBookmarked)}
         >
@@ -75,128 +82,162 @@ export default function ProductDetailsPage({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a1628',
+  container: { 
+    flex: 1, 
+    backgroundColor: '#0a1628' 
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
+  
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    paddingHorizontal: 20, 
+    paddingTop: 50, 
+    paddingBottom: 20
   },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+  
+  backButton: { 
+    width: 40, 
+    height: 40, 
+    justifyContent: 'center', 
+    alignItems: 'center'
   },
-  backIcon: {
-    fontSize: 32,
-    color: '#ffffff',
-    fontWeight: 'bold',
+  
+  backIcon: { 
+    fontSize: 32, 
+    color: '#ffffff', 
+    fontWeight: 'bold' 
   },
-  headerTitle: {
+  
+  headerTitle: { 
+    fontSize: 18, 
+    fontWeight: '600', 
+    color: '#ffffff', 
+    flex: 1, 
+    textAlign: 'center'
+  },
+  
+  headerSpacer: { 
+    width: 40 
+  },
+
+  content: { 
+    flex: 1 
+  },
+  
+  imageContainer: { 
+    alignItems: 'center', 
+    paddingVertical: 30
+  },
+  
+  productImage: { 
+    width: 300, 
+    height: 300, 
+    borderRadius: 20
+  },
+  
+  productImagePlaceholder: { 
+    width: 250, 
+    height: 250, 
+    backgroundColor: '#1e3a5f', 
+    borderRadius: 20, 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  
+  placeholderText: { 
+    fontSize: 80 
+  },
+
+  infoContainer: { 
+    paddingHorizontal: 30, 
+    paddingBottom: 100 
+  },
+  
+  productName: { 
+    fontSize: 22, 
+    fontWeight: 'bold', 
+    color: '#ffffff', 
+    marginBottom: 10 
+  },
+  
+  ratingContainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 15 
+  },
+  
+  stars: { 
+    fontSize: 16, 
+    marginRight: 8 
+  },
+  
+  ratingCount: { 
+    fontSize: 14, 
+    color: '#ffffff', 
+    fontWeight: '500' 
+  },
+  
+  price: { 
+    fontSize: 28, 
+    fontWeight: 'bold', 
+    color: '#ffffff', 
+    marginBottom: 20 
+  },
+  
+  descriptionHeader: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#ffffff',
-    flex: 1,
-    textAlign: 'center',
-  },
-  headerSpacer: {
-    width: 40,
-  },
-  content: {
-    flex: 1,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    paddingVertical: 30,
-  },
-  productImagePlaceholder: {
-    width: 250,
-    height: 250,
-    backgroundColor: '#1e3a5f',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderText: {
-    fontSize: 80,
-  },
-  infoContainer: {
-    paddingHorizontal: 30,
-    paddingBottom: 100,
-  },
-  productName: {
-    fontSize: 22,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 10,
+    marginBottom: 10
   },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
+  
+  description: { 
+    fontSize: 14, 
+    color: '#b0b0b0', 
+    lineHeight: 22 
   },
-  stars: {
-    fontSize: 16,
-    marginRight: 8,
+
+  bottomBar: { 
+    position: 'absolute', 
+    bottom: 0, 
+    left: 0, 
+    right: 0, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    paddingHorizontal: 30, 
+    paddingVertical: 20, 
+    backgroundColor: '#0a1628', 
+    borderTopWidth: 1, 
+    borderTopColor: '#1e3a5f' 
   },
-  ratingCount: {
-    fontSize: 14,
-    color: '#ffffff',
-    fontWeight: '500',
+  
+  bookmarkButton: { 
+    width: 60, 
+    height: 60, 
+    backgroundColor: '#1e3a5f', 
+    borderRadius: 10, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginRight: 15
   },
-  price: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 20,
+  
+  bookmarkIcon: { 
+    fontSize: 28
   },
-  description: {
-    fontSize: 14,
-    color: '#b0b0b0',
-    lineHeight: 22,
+  
+  addToCartButton: { 
+    flex: 1, 
+    height: 60, 
+    backgroundColor: '#6b7fd7', 
+    borderRadius: 10, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
   },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    backgroundColor: '#0a1628',
-    borderTopWidth: 1,
-    borderTopColor: '#1e3a5f',
-  },
-  bookmarkButton: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#1e3a5f',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  bookmarkIcon: {
-    fontSize: 28,
-  },
-  addToCartButton: {
-    flex: 1,
-    height: 60,
-    backgroundColor: '#6b7fd7',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addToCartText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#ffffff',
+  
+  addToCartText: { 
+    fontSize: 18, 
+    fontWeight: '600', 
+    color: '#ffffff' 
   },
 });
