@@ -40,11 +40,11 @@ export default function ProfilePage({ navigation }) {
             </View>
             <View style={styles.statCard}>
               <Text style={styles.statLabel}>Orders</Text>
-              <Text style={styles.statValue}>3</Text>
+              <Text style={styles.statValue}>0</Text>
             </View>
             <View style={styles.statCard}>
               <Text style={styles.statLabel}>Total Spent</Text>
-              <Text style={styles.statValue}>₱ 50,113</Text>
+              <Text style={styles.statValue}>₱ 00.00</Text>
             </View>
           </View>
 
